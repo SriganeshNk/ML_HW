@@ -8,6 +8,7 @@ def get_likelihood(x,y,w):
         ans = w[0]
         for i in range(1,len(x)):
             ans += x[j][i]*w[i]
+        print ans
         result += y[j]*(ans) - math.log((1+math.exp(ans)))
     return result
 
