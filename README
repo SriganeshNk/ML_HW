@@ -1,0 +1,12 @@
+Ada Boost implementation:
+
+1. Works on the data bupa.data
+2. bupa.data should be on the same directory as the execution part.
+3. Q1. Prints the train error and test error after every sampling.
+ Plots the average train and test error in a single graph.
+ Blue --- Train
+ Green --- Test
+
+4. Q2. Prints the choice of feature and the margin used for classification for the first 10 iterations, when training the entire data.
+
+5. Q3. Calculates the cdf and plots the points at T = 10, 50 and 100.
