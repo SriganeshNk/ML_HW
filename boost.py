@@ -155,7 +155,7 @@ def etl():
     k = 0
     for i in hypothesis:
         print "Feature chosen-----Split boundary chosen"
-        print i[0],'--------------------', i[1]
+        print "----", i[0],'--------------', i[1]
         k += 1
         if k > 9:
             break
