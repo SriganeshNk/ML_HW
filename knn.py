@@ -67,7 +67,7 @@ def cross_validate(data, labels, NN, n=10, k=9):
         else:
             train_labels = list(labels[end:])
         L = train_knn(train_labels, NN[i], k)
-        acc.append(accuracy(L, labels[start:end]))
+        acc.append(1-accuracy(L, labels[start:end]))
         i += 1
     return float(sum(acc))/float(len(acc))
 
@@ -89,21 +89,27 @@ def compute_train_distances(data, n=10):
     return NN
 
 if __name__== "__main__":
+    print "Enter n for cross validation:"
     n = int(raw_input())
     data = scipy.io.loadmat("hw3_matlab/faces.mat")
+    NN_train = compute_distances(data['traindata'], data['traindata'])
     NN = compute_distances(data['traindata'], data['testdata'])
     NN_10 = compute_train_distances(data['traindata'], n)
-    train_acc, test_acc = [], []
+    cross_acc, train_acc, test_acc = [], [], []
     for k in range(1,101):
-        train_acc.append(cross_validate(data['traindata'],data['trainlabels'], NN_10, n, k))
+        cross_acc.append(cross_validate(data['traindata'],data['trainlabels'], NN_10, n, k))
         labels = train_knn(data['trainlabels'],NN, k)
-        test_acc.append(accuracy(labels, data['testlabels']))
+        labels_train = train_knn(data['trainlabels'], NN_train, k)
+        train_acc.append(1-accuracy(labels_train, data['trainlabels']))
+        test_acc.append(1-accuracy(labels, data['testlabels']))
     for k in range(100):
         print "k= ", k
-        print "Train Accuracy:", train_acc[k]
-        print "Test Accuracy:", test_acc[k]
+        print "Train Error :", train_acc[k]
+        print "Cross Validation Error :", train_acc[k]
+        print "Test Error:", test_acc[k]
         print "-------------------------------"
-    lineup, =plt.plot(train_acc,label="train")
+    lineup, = plt.plot(train_acc,label="train")
+    linecross, = plt.plot(cross_acc,label="cross")
     linedown, =plt.plot(test_acc, label="test")
-    plt.legend([lineup, linedown], ['Train', 'Test'])
+    plt.legend([lineup,linecross, linedown], ['Train', 'Cross', 'Test'])
     plt.show()
